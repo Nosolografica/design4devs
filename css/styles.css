@@ -90,7 +90,7 @@
 }
 
 html {
-  scroll-padding-top: 88px;
+  scroll-padding-top: 112px;
 }
 
 @media (prefers-reduced-motion:no-preference) {
@@ -157,19 +157,24 @@ h1 {
 }
 
 .prog {
-  background: var(--color-surface-subtle);
-  border-radius: 16px;
-  padding: 16px 24px;
   display: flex;
-  gap: 24px;
+  gap: 16px;
   align-items: center;
-  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 8px;
+  color: var(--color-heading-level-3);
+  font-size: .9rem;
+}
+
+.prog strong {
+  white-space: nowrap;
 }
 
 progress {
   flex: 1;
-  min-width: 10rem;
-  height: 12px;
+  min-width: 6rem;
+  height: 8px;
   accent-color: var(--color-button-background);
 }
 
@@ -510,7 +515,7 @@ footer {
   font-size: clamp(2.6rem,8vw,5.25rem);
   line-height: 1.02;
   letter-spacing: -.02em;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
   max-width: 12ch;
 }
 
@@ -519,16 +524,6 @@ footer {
   font-size: clamp(1.15rem,2.6vw,1.6rem);
   line-height: 1.45;
   max-width: 30ch;
-}
-
-.hero .prog {
-  background: rgba(255,255,255,.14);
-  color: #fff;
-  max-width: 28rem;
-}
-
-.hero progress {
-  accent-color: #ACCBF9;
 }
 
 .herofig {
@@ -786,14 +781,14 @@ p {
 }
 
 .herofig {
-  width: min(340px,36vw);
+  width: min(460px,42vw);
 }
 
 .cta {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  margin: 32px 0;
+  margin: 48px 0 0;
 }
 
 .bt {
@@ -879,7 +874,7 @@ h3::after {
 }
 
 .soonlead {
-  color: #E9EEF8 !important;
+  color: var(--color-heading-level-3);
   font-size: 1.25rem;
   max-width: 44ch;
 }
@@ -998,10 +993,6 @@ h3::after {
 
 .hero {
   padding: 96px 0 168px;
-}
-
-.hero .prog {
-  background: rgba(255,255,255,.08);
 }
 
 nav a {
@@ -2233,8 +2224,11 @@ nav {
 }
 
 .el:hover,.el:focus-visible {
-  border-color: var(--color-accent);
-  background: color-mix(in srgb,var(--color-accent-secondary) 22%,transparent);
+  background: var(--color-surface-subtle);
+}
+
+.el svg {
+  margin-bottom: 8px;
 }
 
 /* filtros de perfiles con su color */
@@ -2706,7 +2700,7 @@ nav {
 /* Header, contrast, typography and professional profiles */
 
 .hero {
-  background: radial-gradient(circle at 86% 24%,rgba(224,160,58,.32),transparent 42%),radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(135deg,#242852 0%,#4A66AC 100%);
+  background: radial-gradient(circle at 86% 24%,rgba(122,75,155,.55),transparent 48%),radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(135deg,#242852 0%,#4A66AC 70%,#7A4B9B 100%);
   color: #fff;
   clip-path: none;
   padding: 88px 0 112px;
@@ -2719,15 +2713,6 @@ nav {
 
 .hero .lead {
   color: #EEF2FB;
-}
-
-.hero .prog {
-  background: rgba(255,255,255,.12);
-  color: #fff;
-}
-
-.hero progress {
-  accent-color: #E0A03A;
 }
 
 .mv {
@@ -2756,6 +2741,219 @@ nav {
 
 .topic.light p {
   color: #3A3D4F;
+}
+
+/* Qué es diseñar: composición animada con cuatro disposiciones */
+
+.compose {
+  --pose-circle: translate(1180px,170px);
+  --pose-square: translate(230px,470px) rotate(-12deg);
+  --pose-triangle: translate(1230px,500px) rotate(14deg) scale(.9);
+  --pose-ring: translate(250px,150px);
+  --pose-dot: translate(380px,330px);
+  --pose-grid: translate(1100px,340px);
+  --pose-bar: translate(940px,590px) rotate(-8deg);
+}
+
+.compose[data-layout="left"] {
+  --pose-circle: translate(1030px,250px) scale(1.35);
+  --pose-square: translate(1250px,480px) rotate(18deg);
+  --pose-triangle: translate(800px,500px) rotate(-8deg);
+  --pose-ring: translate(1250px,140px);
+  --pose-dot: translate(800px,110px);
+  --pose-grid: translate(800px,330px);
+  --pose-bar: translate(1100px,600px) rotate(8deg);
+}
+
+.compose[data-layout="right"] {
+  --pose-circle: translate(410px,260px) scale(1.35);
+  --pose-square: translate(190px,480px) rotate(-14deg);
+  --pose-triangle: translate(640px,500px) rotate(10deg);
+  --pose-ring: translate(190px,130px);
+  --pose-dot: translate(640px,110px);
+  --pose-grid: translate(640px,330px);
+  --pose-bar: translate(330px,600px) rotate(-8deg);
+}
+
+.compose[data-layout="bottom"] {
+  --pose-circle: translate(260px,150px) scale(1.1);
+  --pose-square: translate(1200px,140px) rotate(20deg);
+  --pose-triangle: translate(720px,170px) rotate(-6deg) scale(.8);
+  --pose-ring: translate(980px,230px);
+  --pose-dot: translate(500px,70px);
+  --pose-grid: translate(1320px,300px);
+  --pose-bar: translate(110px,330px) rotate(80deg);
+}
+
+.compose-shapes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.shape {
+  transition: transform 3s cubic-bezier(.45,0,.2,1);
+}
+
+.shape-circle {
+  transform: var(--pose-circle);
+}
+
+.shape-square {
+  transform: var(--pose-square);
+}
+
+.shape-triangle {
+  transform: var(--pose-triangle);
+}
+
+.shape-ring {
+  transform: var(--pose-ring);
+}
+
+.shape-dot {
+  transform: var(--pose-dot);
+}
+
+.shape-grid {
+  transform: var(--pose-grid);
+}
+
+.shape-bar {
+  transform: var(--pose-bar);
+}
+
+.shape-float {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.compose-in {
+  display: grid;
+  min-height: 680px;
+}
+
+.compose-body {
+  align-self: center;
+  justify-self: center;
+  width: min(100%,34rem);
+  text-align: center;
+}
+
+.compose h2 {
+  font-size: clamp(2.6rem,7vw,5rem);
+}
+
+.compose h2::after {
+  margin-inline: auto;
+}
+
+.compose .compose-text {
+  max-width: none;
+}
+
+.compose[data-layout="left"] .compose-body {
+  justify-self: start;
+  width: min(100%,28rem);
+  text-align: left;
+}
+
+.compose[data-layout="left"] h2::after {
+  margin-inline: 0;
+}
+
+.compose[data-layout="left"] .compose-text {
+  text-align: justify;
+}
+
+.compose[data-layout="right"] .compose-body {
+  justify-self: end;
+  width: min(100%,28rem);
+  text-align: right;
+}
+
+.compose[data-layout="right"] h2::after {
+  margin-inline: auto 0;
+}
+
+.compose[data-layout="bottom"] .compose-body {
+  align-self: end;
+  justify-self: start;
+  width: min(100%,60rem);
+  text-align: left;
+}
+
+.compose[data-layout="bottom"] h2::after {
+  margin-inline: 0;
+}
+
+.compose[data-layout="bottom"] .compose-text {
+  column-count: 2;
+  column-gap: 48px;
+  text-align: justify;
+}
+
+.compose-pause {
+  position: absolute;
+  top: 24px;
+  right: 16px;
+  z-index: 2;
+}
+
+.word,
+.letter,
+.word-title {
+  display: inline-block;
+}
+
+.word-title {
+  white-space: nowrap;
+}
+
+@media (max-width:760px) {
+  .compose-shapes {
+    opacity: .4;
+  }
+
+  .compose-body,
+  .compose[data-layout] .compose-body {
+    width: 100%;
+  }
+
+  .compose[data-layout="bottom"] .compose-text {
+    column-count: 1;
+  }
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  .shape-float {
+    animation: shape-float var(--animation-duration,8s) ease-in-out var(--animation-delay,0s) infinite alternate;
+  }
+
+  .letter {
+    animation: letter-wave 3.6s ease-in-out calc(var(--index)*.12s) infinite;
+  }
+
+  @keyframes shape-float {
+    from {
+      transform: translate(-10px,-8px) rotate(-4deg);
+    }
+
+    to {
+      transform: translate(10px,8px) rotate(4deg);
+    }
+  }
+
+  @keyframes letter-wave {
+    0%,60%,100% {
+      transform: translateY(0) rotate(0);
+    }
+
+    30% {
+      transform: translateY(-.12em) rotate(-4deg) scale(1.06);
+    }
+  }
 }
 
 .exs {
@@ -3041,13 +3239,20 @@ nav {
 .leyes {
   display: grid;
   gap: 32px;
-  grid-template-columns: repeat(auto-fit,minmax(20rem,1fr));
+  grid-template-columns: repeat(2,minmax(0,1fr));
   margin-top: 32px;
 }
 
+@media (max-width:820px) {
+  .leyes {
+    grid-template-columns: 1fr;
+  }
+}
+
 .ley {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
   gap: 12px;
   padding: 28px;
   border: 1px solid var(--color-border);
@@ -3353,29 +3558,25 @@ nav {
   content: "✗";
 }
 
-.leyes {
-  grid-template-columns: repeat(auto-fit,minmax(min(100%,26rem),1fr));
-}
-
 /* Challenges and progress components */
-
-.topic .lead2 {
-  font-size: 1rem;
-  line-height: 1.55;
-  margin-top: 20px;
-  max-width: 50ch;
-  color: #D5DDF0;
-}
-
-.topic.light .lead2 {
-  color: #566282;
-}
 
 #modulo0 .topic {
   margin-bottom: 0;
 }
 
-/* retos: solo cambia el color del filete */
+/* retos: título más claro, etiqueta en mayúsculas y filete propio */
+
+h3.reto-h {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.reto-pal {
+  color: var(--color-brand);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
 
 h3.reto-h::after {
   background: linear-gradient(90deg,var(--color-brand),var(--color-label-convention));
@@ -3640,16 +3841,21 @@ h3.reto-h::after {
     }
   }
 
+  .el {
+    transition: transform .35s cubic-bezier(.3,1.6,.5,1),box-shadow .35s ease,background-color .2s;
+  }
+
   .el:hover,.el:focus-visible {
-    background: none;
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px color-mix(in srgb,var(--color-navy) 18%,transparent);
   }
 
   .el svg {
-    transition: transform .45s cubic-bezier(.3,1.9,.5,1);
+    transition: transform .5s cubic-bezier(.3,1.9,.5,1);
   }
 
   .el:hover svg,.el:focus-visible svg {
-    transform: scale(1.16);
+    transform: scale(1.6) rotate(-8deg);
   }
 
   .sw.vivo {

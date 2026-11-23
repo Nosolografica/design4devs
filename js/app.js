@@ -38,23 +38,23 @@ if ("IntersectionObserver" in window) {
 var activos = {};
 function pintarPerfiles() {
   var claves = Object.keys(activos), lista = [];
-  perfiles.forEach(function (p) {
+  PROFESSIONAL_PROFILES.forEach(function (p) {
     var c = p[3].filter(function (t) { return activos[t]; }).length;
     if (claves.length === 0 || c > 0) { lista.push({ p: p, c: c }); }
   });
   lista.sort(function (a, b) { return b.c - a.c; });
   $("#profs").innerHTML = lista.map(function (x) {
     var m = x.p[0].match(/^(.*?) \((.*)\)$/);
-    var af = x.p[3].map(function (t) { return gustos[t].replace("Me gusta ", ""); }).join(", ");
+    var af = x.p[3].map(function (t) { return USER_INTERESTS[t].replace("Me gusta ", ""); }).join(", ");
     return '<article class="card prof k-' + x.p[3][0] + '"><span class="shs" role="img" aria-label="Afinidad: ' + af + '">' +
       x.p[3].map(function (t) { return '<span class="sh s-' + t + '"></span>'; }).join("") +
       '</span><h4>' + m[1] + "</h4><p>" + x.p[1] + "</p><small>" + x.p[2] + "</small></article>";
   }).join("");
-  $("#cuenta").textContent = "Mostrando " + lista.length + " de " + perfiles.length + " perfiles" + (claves.length ? ", ordenados por afinidad." : ".");
+$("#cuenta").textContent = "Mostrando " + lista.length + " de " + PROFESSIONAL_PROFILES.length + " PROFESSIONAL_PROFILES" + (claves.length ? ", ordenados por afinidad." : ".");
 }
-Object.keys(gustos).forEach(function (k) {
+Object.keys(USER_INTERESTS).forEach(function (k) {
   var b = document.createElement("button");
-  b.className = "chip"; b.type = "button"; b.innerHTML = '<span class="sh s-' + k + '" aria-hidden="true"></span>' + gustos[k]; b.dataset.k = k;
+  b.className = "chip"; b.type = "button"; b.innerHTML = '<span class="sh s-' + k + '" aria-hidden="true"></span>' + USER_INTERESTS[k]; b.dataset.k = k;
   b.setAttribute("aria-pressed", "false");
   b.onclick = function () {
     if (activos[k]) { delete activos[k]; } else { activos[k] = true; }
@@ -64,7 +64,7 @@ Object.keys(gustos).forEach(function (k) {
   $("#chips").appendChild(b);
 });
 var quitar = document.createElement("button");
-quitar.className = "link"; quitar.type = "button"; quitar.textContent = "Quitar filtros";
+quitar.className = "link"; quitar.type = "button"; quitar.textContent = "Quitar SVG_FILTERS";
 quitar.onclick = function () {
   activos = {};
   document.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
@@ -196,23 +196,23 @@ bind(["rw"], function () {
 
 // ===== Accesibilidad =====
 
-bind(["dt"], function () { $("#dstage").style.filter = filtros[$("#dt").value]; });
+bind(["dt"], function () { $("#dstage").style.filter = SVG_FILTERS[$("#dt").value]; });
 
-$("#rev").innerHTML = REV.map(function (r, i) {
+$("#rev").innerHTML = ACCESSIBILITY_EXAMPLES.map(function (r, i) {
   return '<div class="rev"><pre class="code"></pre><fieldset style="margin:0"><legend class="sub" style="margin-bottom:4px">Fragmento ' + (i + 1) + '</legend><label><input type="radio" name="r' + i + '" value="1"> Correcto</label><label><input type="radio" name="r' + i + '" value="0"> Con fallo</label></fieldset><p class="why" id="why' + i + '"></p></div>';
 }).join("");
-document.querySelectorAll("#rev pre").forEach(function (e, i) { e.textContent = REV[i][0]; });
+document.querySelectorAll("#rev pre").forEach(function (e, i) { e.textContent = ACCESSIBILITY_EXAMPLES[i][0]; });
 $("#revbtn").onclick = function () {
   var ok = 0, sin = 0;
-  REV.forEach(function (r, i) {
+  ACCESSIBILITY_EXAMPLES.forEach(function (r, i) {
     var sel = document.querySelector('input[name="r' + i + '"]:checked'), w = $("#why" + i);
     if (!sel) { sin++; w.textContent = ""; return; }
     var bien = (sel.value === "1") === r[1];
     if (bien) { ok++; }
     w.className = "why " + (bien ? "ok" : "ko"); w.textContent = (bien ? "✓ " : "✗ ") + r[2];
   });
-  if (sin) { $("#res5").className = "res ko"; $("#res5").textContent = "Responde los " + REV.length + " fragmentos antes de comprobar."; return; }
-  reto("accesibilidad", "res5", ok === REV.length, ok + " de " + REV.length + " correctas." + (ok < REV.length ? " Revisa las explicaciones y cambia tus respuestas." : ""));
+  if (sin) { $("#res5").className = "res ko"; $("#res5").textContent = "Responde los " + ACCESSIBILITY_EXAMPLES.length + " fragmentos antes de comprobar."; return; }
+  reto("accesibilidad", "res5", ok === ACCESSIBILITY_EXAMPLES.length, ok + " de " + ACCESSIBILITY_EXAMPLES.length + " correctas." + (ok < ACCESSIBILITY_EXAMPLES.length ? " Revisa las explicaciones y cambia tus respuestas." : ""));
 };
 
 // ===== Sistemas de diseño =====
@@ -234,20 +234,20 @@ bind(["tlc", "tdk"], function () {
 // ===== Usabilidad =====
 
 
-$("#heu").innerHTML = CASOS.map(function (c, i) {
-  var o = '<option value="">Elige una heurística</option>' + HE.map(function (h, k) { return '<option value="' + k + '">' + h + "</option>"; }).join("");
+$("#heu").innerHTML = USABILITY_CASES.map(function (c, i) {
+  var o = '<option value="">Elige una heurística</option>' + NIELSEN_HEURISTICS.map(function (h, k) { return '<option value="' + k + '">' + h + "</option>"; }).join("");
   return '<div class="rev"><p style="margin:0 0 12px"><strong>Caso ' + (i + 1) + ".</strong> " + c[0] + '</p><label for="h' + i + '" class="sub" style="font-weight:400">Heurística</label><select id="h' + i + '">' + o + '</select><p class="why" id="hw' + i + '"></p></div>';
 }).join("");
 $("#heubtn").onclick = function () {
   var ok = 0, sin = 0;
-  CASOS.forEach(function (c, i) {
+  USABILITY_CASES.forEach(function (c, i) {
     var v = $("#h" + i).value, w = $("#hw" + i);
     if (v === "") { sin++; w.textContent = ""; return; }
     var bien = +v === c[1]; if (bien) { ok++; }
-    w.className = "why " + (bien ? "ok" : "ko"); w.textContent = bien ? "✓ Correcto: " + HE[c[1]] + "." : "✗ Piensa en qué necesitaría la persona en ese momento.";
+    w.className = "why " + (bien ? "ok" : "ko"); w.textContent = bien ? "✓ Correcto: " + NIELSEN_HEURISTICS[c[1]] + "." : "✗ Piensa en qué necesitaría la persona en ese momento.";
   });
-  if (sin) { $("#res7").className = "res ko"; $("#res7").textContent = "Elige una heurística en los " + CASOS.length + " casos."; return; }
-  reto("heuristicas", "res7", ok === CASOS.length, ok + " de " + CASOS.length + " correctas.");
+  if (sin) { $("#res7").className = "res ko"; $("#res7").textContent = "Elige una heurística en los " + USABILITY_CASES.length + " casos."; return; }
+  reto("heuristicas", "res7", ok === USABILITY_CASES.length, ok + " de " + USABILITY_CASES.length + " correctas.");
 };
 // ===== Color: modelos, rueda, combinación y psicología =====
 function rgb2hsl(r, g, b) {
@@ -266,10 +266,10 @@ bind(["rr", "rg", "rb"], function () {
 
 
 function pintaPsi(i) {
-  var c = PSI[i]; document.querySelectorAll("#psichips .chip").forEach(function (b, k) { b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
+  var c = COLOR_MEANINGS[i]; document.querySelectorAll("#psichips .chip").forEach(function (b, k) { b.setAttribute("aria-pressed", k === i ? "true" : "false"); });
   $("#psi").innerHTML = '<div class="pcol"><div class="sw" style="background:' + c[1] + '" role="img" aria-label="Muestra de ' + c[0].toLowerCase() + '"></div><div style="flex:1;min-width:14rem"><p><strong>' + c[0] + ".</strong> " + c[2] + "</p><p class='ui'><strong>Ojo:</strong> " + c[3] + "</p></div></div>";
 }
-PSI.forEach(function (c, i) {
+COLOR_MEANINGS.forEach(function (c, i) {
   var b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.setAttribute("aria-pressed", "false");
   b.innerHTML = '<span class="sh" style="background:' + c[1] + ';border-radius:50%;box-shadow:0 0 0 1px #14202B66"></span>' + c[0];
   b.onclick = function () { pintaPsi(i); }; $("#psichips").appendChild(b);
@@ -278,18 +278,18 @@ pintaPsi(4);
 
 // ===== Tipografía: familias, voz y combinaciones =====
 
-Object.keys(FAM).forEach(function (k) {
-  var b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.setAttribute("aria-pressed", "false"); b.textContent = FAM[k][0]; b.dataset.k = k;
+Object.keys(FONT_CATEGORIES).forEach(function (k) {
+  var b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.setAttribute("aria-pressed", "false"); b.textContent = FONT_CATEGORIES[k][0]; b.dataset.k = k;
   b.onclick = function () { pintaFam(k); }; $("#famchips").appendChild(b);
 });
 function pintaFam(k) {
-  var f = FAM[k]; document.querySelectorAll("#famchips .chip").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.k === k ? "true" : "false"); });
+  var f = FONT_CATEGORIES[k]; document.querySelectorAll("#famchips .chip").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.k === k ? "true" : "false"); });
   $("#fam").innerHTML = '<div class="fam"><div><div class="aa" style="font-family:' + f[1] + '">Aa</div><p style="font-family:' + f[1] + ';font-size:1.3rem;margin:8px 0 0">Diseña con intención</p></div><div>' + (f[7] ? '<p class="recom"><span class="sh s-visual" aria-hidden="true"></span>' + f[7] + "</p>" : "") + '<p><strong>Ejemplos:</strong> ' + f[3] + "</p><p><strong>Sensación habitual:</strong> " + f[4] + "</p><p style='margin:0'><strong>Úsala para:</strong> " + f[5] + "</p><p style='margin:12px 0 0'><strong>Legibilidad:</strong> " + f[6] + "</p></div></div>";
 }
 pintaFam("serif");
 bind(["msg"], function () {
   var m = $("#msg").value;
-  $("#voz").innerHTML = Object.keys(FAM).map(function (k) { return '<div class="fr"><span style="font-family:' + FAM[k][1] + '">' + m + "</span><small>" + FAM[k][0] + "</small></div>"; }).join("");
+  $("#voz").innerHTML = Object.keys(FONT_CATEGORIES).map(function (k) { return '<div class="fr"><span style="font-family:' + FONT_CATEGORIES[k][1] + '">' + m + "</span><small>" + FONT_CATEGORIES[k][0] + "</small></div>"; }).join("");
 });
 // ===== Tamaño y jerarquía =====
 bind(["cw"], function () {
@@ -325,7 +325,7 @@ new MutationObserver(marcaGrupos).observe($("nav"), { attributes: true, subtree:
 // ===== Color: paleta y wireframe con la armonía elegida =====
 function chipPal(c, rol) { return '<div class="pc"><i style="background:' + hex(c) + '"></i><span>' + hex(c) + "<small>" + rol + "</small></span></div>"; }
 bind(["ha", "hm"], function () {
-  var h = V("ha"), a = ARM[$("#hm").value], hs = [h].concat(a[0].map(function (o) { return (h + o + 360) % 360; })), dots = "";
+  var h = V("ha"), a = COLOR_HARMONIES[$("#hm").value], hs = [h].concat(a[0].map(function (o) { return (h + o + 360) % 360; })), dots = "";
   hs.forEach(function (x, i) {
     var t = x * Math.PI / 180;
     dots += '<i class="wd" style="left:' + (50 + 34.5 * Math.sin(t)) + "%;top:" + (50 - 34.5 * Math.cos(t)) + "%;background:" + hsl(x, 80, 55) + (i ? "" : ";width:40px;height:40px") + '"></i>';
@@ -358,7 +358,7 @@ function escena(id) {
 }
 
 bind(["gc", "gp", "gg"], function () {
-  var n = +$("#gc").value, g = V("gg"), filas = PRE[$("#gp").value], cols = "", bl = "", css = [], tot = 0;
+  var n = +$("#gc").value, g = V("gg"), filas = LAYOUT_PRESETS[$("#gp").value], cols = "", bl = "", css = [], tot = 0;
   for (var i = 0; i < n; i++) { cols += "<i></i>"; }
   filas.forEach(function (f) {
     var sp = f.map(function (b) { return Math.max(1, Math.round(b[0] * n / 12)); });
@@ -396,8 +396,8 @@ bind(["fs", "fa", "fo"], function () {
 
 bind(["zd", "zc", "zo"], function () {
   var d = $("#zd").value, c = $("#zc").value, o = $("#zo").checked, bg = $("#zbg");
-  bg.style.background = ZCOL[c]; bg.style.clipPath = ZFORM[d]; $("#zcard").hidden = !o;
-  $("#zcss").textContent = ".ruptura {\n  position: relative;\n}\n.ruptura::before {\n  content: \"\"; position: absolute; inset: 0;\n  background: " + ZCOL[c] + ";\n  clip-path: " + ZFORM[d].replace(/, /g, ",\n    ") + ";\n}" + (o ? "\n.tarjeta { margin-bottom: -28px; /* se solapa */ }" : "");
+  bg.style.background = SHAPE_COLORS[c]; bg.style.clipPath = SHAPE_CLIP_PATHS[d]; $("#zcard").hidden = !o;
+  $("#zcss").textContent = ".ruptura {\n  position: relative;\n}\n.ruptura::before {\n  content: \"\"; position: absolute; inset: 0;\n  background: " + SHAPE_COLORS[c] + ";\n  clip-path: " + SHAPE_CLIP_PATHS[d].replace(/, /g, ",\n    ") + ";\n}" + (o ? "\n.tarjeta { margin-bottom: -28px; /* se solapa */ }" : "");
 });
 
 
@@ -408,14 +408,14 @@ bind(["zd", "zc", "zo"], function () {
 // ===== Contraste: ejemplos =====
 
 function hexRgb(x) { return [1, 3, 5].map(function (i) { return parseInt(x.substr(i, 2), 16); }); }
-$("#exs").innerHTML = EXS.map(function (e) {
+$("#exs").innerHTML = CONTRAST_EXAMPLES.map(function (e) {
   var r = ratio(hexRgb(e[0]), hexRgb(e[1]));
   return '<figure class="ex' + (e[4] ? " rec" : "") + '"><div class="exb" style="background:' + e[1] + ";color:" + e[0] + '"><strong>Texto de ejemplo</strong><span>' + fx(r, 1) + ':1</span></div><figcaption><strong>' + e[2] + "</strong><span>" + e[3] + "</span></figcaption></figure>";
 }).join("");
 
 // ===== Tipografía: pesos y combinaciones de ejemplo =====
 
-GLOS.push(
+GLOSSARY_TERMS.push(
 ["peso-tipografico","Peso tipográfico","peso tipográfico|pesos tipográficos","Grosor de las letras, de 100 (fino) a 900 (negro). En CSS, font-weight."],
 ["cursiva","Cursiva","cursivas?|italic","Letra inclinada y redibujada, distinta de una simple inclinación artificial (oblique)."],
 ["condensada","Condensada","condensada|condensed","Variante de una tipografía con letras estrechas. Ahorra espacio."],
@@ -437,26 +437,26 @@ bind(["gt", "ga", "gk1", "gk2"], function () {
 
 
 function cargaFuente(k) {
-  var f = FT[k]; if (f.cargada) { return; } f.cargada = true;
+  var f = GOOGLE_FONT_CATALOG[k]; if (f.cargada) { return; } f.cargada = true;
   var l = document.createElement("link"); l.rel = "stylesheet"; l.href = "https://fonts.googleapis.com/css2?family=" + f[1] + "&display=swap"; document.head.appendChild(l);
 }
-function famCss(k) { return "'" + FT[k][0] + "', " + FT[k][6]; }
-function pesoNombre(w) { return w + " · " + PW[w]; }
+function famCss(k) { return "'" + GOOGLE_FONT_CATALOG[k][0] + "', " + GOOGLE_FONT_CATALOG[k][6]; }
+function pesoNombre(w) { return w + " · " + FONT_WEIGHT_NAMES[w]; }
 $("#cp").onchange = function () {
   var p = $("#cp").value, more = $("#cpmore");
   if (!p) { more.hidden = true; $("#cprev").hidden = true; $("#ccodew").hidden = true; $("#chint").hidden = false; return; }
-  $("#cc").innerHTML = PARES[p].map(function (c, i) { return '<option value="' + i + '">' + FT[c[0]][0] + " + " + FT[c[1]][0] + "</option>"; }).join("");
+  $("#cc").innerHTML = FONT_PAIRINGS[p].map(function (c, i) { return '<option value="' + i + '">' + GOOGLE_FONT_CATALOG[c[0]][0] + " + " + GOOGLE_FONT_CATALOG[c[1]][0] + "</option>"; }).join("");
   more.hidden = false; $("#cprev").hidden = false; $("#ccodew").hidden = false; $("#chint").hidden = true; ajustaCombo();
 };
 function ajustaCombo() {
-  var c = PARES[$("#cp").value][+$("#cc").value], t = FT[c[0]]; cargaFuente(c[0]); cargaFuente(c[1]);
+  var c = FONT_PAIRINGS[$("#cp").value][+$("#cc").value], t = GOOGLE_FONT_CATALOG[c[0]]; cargaFuente(c[0]); cargaFuente(c[1]);
   var w = $("#cw2"); w.min = Math.max(100, t[2]); w.max = Math.min(900, t[3]);
   if (+w.value < +w.min) { w.value = w.min; } if (+w.value > +w.max) { w.value = w.max; }
   $("#cin").textContent = "Peso disponible en esta tipografía: de " + t[2] + " a " + t[3] + ".";
   pintaCombo();
 }
 function pintaCombo() {
-  var c = PARES[$("#cp").value][+$("#cc").value], w = +$("#cw2").value, z = V("csz");
+  var c = FONT_PAIRINGS[$("#cp").value][+$("#cc").value], w = +$("#cw2").value, z = V("csz");
   $("#vcw2").textContent = pesoNombre(w); $("#vcsz").textContent = z;
   $("#cprev").innerHTML = '<h4 class="cprev-t" style="font-family:' + famCss(c[0]) + ";font-weight:" + w + ";font-size:" + z + 'px">Diseña con intención</h4><p class="cp-body" style="font-family:' + famCss(c[1]) + '">Cada decisión de diseño debería poder explicarse con una frase. Si no puedes explicarla, probablemente no la necesitas.</p><p class="hint">' + c[2] + "</p>";
   $("#ccode").textContent = "h1 {\n  font-family: " + famCss(c[0]) + ";\n  font-weight: " + w + ";\n  font-size: " + z + "px;\n}\nbody { font-family: " + famCss(c[1]) + "; }";
@@ -464,8 +464,8 @@ function pintaCombo() {
 $("#cc").onchange = ajustaCombo;
 ["cw2", "csz"].forEach(function (i) { $("#" + i).addEventListener("input", pintaCombo); });
 // ===== Reto 2: cabecera =====
-bind(["tz", "tkk", "tw", "tx", "tu", "ti"], function () {
-  var z = V("tz"), k = V("tkk") / 100, w = V("tw"), a = V("tx"), up = $("#tu").checked, it = $("#ti").checked, e = $("#hdrt");
+bind(["title-size", "tkk", "tw", "tx", "uppercase-toggle", "ti"], function () {
+  var z = V("title-size"), k = V("tkk") / 100, w = V("tw"), a = V("tx"), up = $("#uppercase-toggle").checked, it = $("#ti").checked, e = $("#hdrt");
   $("#vtw").textContent = pesoNombre(w); $("#vtkk").textContent = fx(k, 2) + " em";
   e.style.cssText = "font-size:" + z + "px;font-weight:" + w + ";letter-spacing:" + k + "em;font-stretch:" + a + "%;font-style:" + (it ? "italic" : "normal") + ";text-transform:" + (up ? "uppercase" : "none");
   $("#tcode").textContent = ".cabecera h1 {\n  font-size: " + z + "px;\n  font-weight: " + w + ";\n  letter-spacing: " + k + "em;\n  font-stretch: " + a + "%;\n  font-style: " + (it ? "italic" : "normal") + ";\n  text-transform: " + (up ? "uppercase" : "none") + ";\n}";
@@ -492,7 +492,7 @@ document.querySelectorAll("#vista-inicio h3").forEach(function (h) {
     for (var e = h.nextElementSibling; e && e.tagName !== "H3"; e = e.nextElementSibling) { if (e.classList.contains("card")) { e.classList.add("reto-card"); break; } }
   }
 });
-GLOS.push(
+GLOSSARY_TERMS.push(
 ["wcag-niveles","Niveles A, AA y AAA (WCAG)","AAA|nivel AA|nivel AAA|AA","Los tres niveles de exigencia de WCAG. A es el mínimo, AA el habitual y el que se exige por ley, y AAA el más estricto."],
 ["ratio-lectura","Cómo leer un ratio (4,5:1)","4,5:1|4,5 a 1|3:1|3 a 1|7:1|7 a 1|21:1|21 a 1","Un ratio compara la luminosidad de dos colores. 4,5:1 significa que el claro tiene 4,5 veces la luminosidad del oscuro (más una constante). Va de 1:1 (iguales) a 21:1 (negro sobre blanco)."],
 ["criterio-wcag","Criterio WCAG (1.4.3)","1\\.4\\.3|1\\.4\\.4|1\\.4\\.8|1\\.4\\.12|2\\.5\\.8","Cada requisito de WCAG tiene un número. 1.4.3 es el contraste mínimo, 1.4.4 el cambio de tamaño del texto y 2.5.8 el tamaño de los objetivos táctiles."],
@@ -500,10 +500,10 @@ GLOS.push(
 ["kerning","Kerning y tracking","kerning|tracking","Kerning es el ajuste del espacio entre dos letras concretas; tracking, el espacio entre todas las letras. En CSS, letter-spacing es tracking, aunque aquí lo llamamos kerning."],
 ["degradado","Degradado","degradados?|gradientes?","Transición suave entre colores. En CSS puede ser lineal, radial o cónico."]
 );
-GLOS.sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
+GLOSSARY_TERMS.sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
 
 // ===== Glosario: términos de esquemas y recetas =====
-GLOS.push(
+GLOSSARY_TERMS.push(
 ["linea","Línea","","Trazo que une, separa u orienta. En web: bordes, separadores, subrayados y trazos de iconos."],
 ["forma","Forma","","Área con contorno propio: círculo, cuadrado, triángulo. Cada una suele comunicar algo: el círculo suavidad, el cuadrado estabilidad y el triángulo dirección."],
 ["textura","Textura","","Sensación de superficie: grano, relieve o patrón. En web se consigue con imágenes, degradados o un ruido sutil."],
@@ -522,9 +522,9 @@ GLOS.push(
 ["object-fit","object-fit","object-fit","Propiedad CSS que decide cómo se ajusta una imagen a su caja. Con cover llena la caja recortando lo que sobra."],
 ["ruptura","Zona de ruptura","zonas? de ruptura","Sección que cambia el ritmo de la página con otro color, un borde inclinado o curvo, o una tarjeta solapada."]
 );
-GLOS.sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
+GLOSSARY_TERMS.sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
 // ===== Glosario: términos nuevos =====
-GLOS.push(
+GLOSSARY_TERMS.push(
 ["elementos","Elementos del diseño","elementos del diseño","Materiales básicos de un diseño: línea, forma, color, textura, tipografía, espacio y tamaño."],
 ["principios","Principios del diseño","principios del diseño","Criterios para combinar los elementos: jerarquía, contraste, equilibrio, alineación, repetición y unidad."],
 ["rgb","RGB","RGB","Modelo de color aditivo de las pantallas: se mezclan luz roja, verde y azul, de 0 a 255 cada una."],
@@ -538,11 +538,11 @@ GLOS.push(
 ["display","Tipografía display","display","Tipografía pensada para titulares grandes, con mucha personalidad."],
 ["clamp","clamp()","clamp\\(\\)","Función CSS que limita un valor entre un mínimo y un máximo y permite tamaños fluidos."]
 );
-GLOS.sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
+GLOSSARY_TERMS.sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
 
 (function () {
   var h = "", letra = "";
-  GLOS.forEach(function (g) {
+  GLOSSARY_TERMS.forEach(function (g) {
     var l = g[1][0].toUpperCase();
     if (l !== letra) { letra = l; h += '<h3 class="glh">' + l + "</h3>"; }
     h += '<div class="gi" id="glosario-' + g[0] + '"><h3>' + g[1] + "</h3><p>" + g[3] + "</p></div>";
@@ -553,32 +553,71 @@ GLOS.sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
 // ===== Página de reglas: se genera leyendo las notas y las leyes del contenido =====
 
 
-function slugKind(k) { return "reglas-" + k.toLowerCase().replace("ó", "o"); }
-document.querySelectorAll("#vista-inicio .note").forEach(function (n) {
-  var tag = n.querySelector(".tag"); if (!tag) { return; }
-  var k = tag.textContent.trim(), sec = n.closest("section");
-  var txt = ""; for (var i = 1; i < n.childNodes.length; i++) { txt += n.childNodes[i].textContent; }
-  REGLAS[k].push({ t: sec.querySelector("h2").textContent, x: txt.trim(), id: sec.id });
-  var span = document.createElement("span");
-  while (n.childNodes.length > 1) { span.appendChild(n.childNodes[1]); }
-  span.insertAdjacentHTML("beforeend", ' <a href="#' + slugKind(k) + '">Ver todas</a>');
-  n.appendChild(span);
+function slugKind(category) { return "rules-" + category; }
+document.querySelectorAll("#vista-inicio .note").forEach(function (note) {
+  var categoryLabel = note.querySelector(".tag");
+  if (!categoryLabel) { return; }
+
+  var category = categoryLabel.getAttribute("data-rule-category");
+  var section = note.closest("section");
+  if (!category || !DESIGN_RULES[category] || !section) { return; }
+
+  var description = "";
+  for (var i = 1; i < note.childNodes.length; i++) {
+    description += note.childNodes[i].textContent;
+  }
+
+  DESIGN_RULES[category].push({
+    title: section.querySelector("h2").textContent,
+    description: description.trim(),
+    sectionId: section.id
+  });
+
+  var content = document.createElement("span");
+  while (note.childNodes.length > 1) {
+    content.appendChild(note.childNodes[1]);
+  }
+  content.insertAdjacentHTML("beforeend", ' <a href="#' + slugKind(category) + '">Ver todas</a>');
+  note.appendChild(content);
 });
-document.querySelectorAll("#vista-inicio .pr, #vista-inicio .ley").forEach(function (a) {
-  var h = a.querySelector("h4"), sec = a.closest("section"), host = a.querySelector(".prt") || a;
-  REGLAS.Ley.push({ t: h.firstChild.textContent, x: (a.querySelector(".prt p") || a.querySelector(".lede")).textContent, id: sec.id });
-  host.insertAdjacentHTML("beforeend", '<p class="ui"><a href="#reglas-ley">Ver todas las leyes</a></p>');
+document.querySelectorAll("#vista-inicio .pr, #vista-inicio .ley").forEach(function (example) {
+  var heading = example.querySelector("h4");
+  var section = example.closest("section");
+  var contentHost = example.querySelector(".prt") || example;
+  var description = example.querySelector(".prt p") || example.querySelector(".lede");
+
+  if (!heading || !section || !description) { return; }
+
+  DESIGN_RULES.law.push({
+    title: heading.firstChild.textContent,
+    description: description.textContent,
+    sectionId: section.id
+  });
+  contentHost.insertAdjacentHTML("beforeend", '<p class="ui"><a href="#rules-law">Ver todas las leyes</a></p>');
 });
-$("#reg").innerHTML = GRUPOS.map(function (g) {
-  return '<div class="rg" id="' + slugKind(g[0]) + '"><h3>' + g[1] + "</h3><p>" + g[2] + "</p>" + REGLAS[g[0]].map(function (r) {
-    return '<div class="ri"><h3>' + r.t + "</h3><p>" + r.x + '</p><p class="ut"><a href="#' + r.id + '">Ver en el tema</a></p></div>';
-  }).join("") + "</div>";
+
+$("#reg").innerHTML = RULE_GROUPS.map(function (group) {
+  var legacyId = {
+    standard: "reglas-norma",
+    law: "reglas-ley",
+    evidence: "reglas-evidencia",
+    convention: "reglas-convencion"
+  }[group[0]];
+
+  var items = DESIGN_RULES[group[0]].map(function (rule) {
+    return '<div class="ri"><h3>' + rule.title + "</h3><p>" + rule.description +
+      '</p><p class="ut"><a href="#' + rule.sectionId + '">Ver en el tema</a></p></div>';
+  }).join("");
+
+  return '<div class="rg" id="' + slugKind(group[0]) + '">' +
+    '<span class="anchor-alias" id="' + legacyId + '" aria-hidden="true"></span>' +
+    '<h3>' + group[1] + "</h3><p>" + group[2] + "</p>" + items + "</div>";
 }).join("");
 
 // ===== Resaltar términos del glosario en el contenido (el primero de cada sección) =====
 (function () {
   var mapa = {}, partes = [];
-  GLOS.forEach(function (g) { g[2].split("|").filter(Boolean).forEach(function (a) { mapa[a.toLowerCase()] = g; partes.push(a); }); });
+  GLOSSARY_TERMS.forEach(function (g) { g[2].split("|").filter(Boolean).forEach(function (a) { mapa[a.toLowerCase()] = g; partes.push(a); }); });
   partes.sort(function (a, b) { return b.length - a.length; });
   var re = new RegExp("(?<![\\p{L}\\p{N}])(" + partes.join("|") + ")(?![\\p{L}\\p{N}])", "giu");
   var NO = /^(A|BUTTON|H1|H2|H3|H4|LABEL|OUTPUT|PRE|CODE|SVG|TEXTAREA|SELECT|OPTION|SUMMARY|SCRIPT|STYLE|LEGEND|SMALL)$/;
@@ -614,6 +653,102 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   };
   mover(); setInterval(mover, 4000);
 }
+
+// ===== Qué es diseñar: el texto se desordena y se recompone en cuatro disposiciones =====
+(function () {
+  var composicion = $("#composicion");
+  if (!composicion || !composicion.animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) { return; }
+
+  var DISPOSICIONES = ["center", "left", "right", "bottom"];
+  var MOVIMIENTO = 3200, REPOSO = 7000;
+  var indice = 0, pausado = false, visible = false, temporizador = null;
+
+  // Cada palabra pasa a ser una pieza móvil; los enlaces del glosario se conservan
+  function dividirPalabras(nodo) {
+    Array.prototype.slice.call(nodo.childNodes).forEach(function (hijo) {
+      if (hijo.nodeType === 1) { dividirPalabras(hijo); return; }
+      if (hijo.nodeType !== 3) { return; }
+      var fragmento = document.createDocumentFragment();
+      hijo.nodeValue.split(/(\s+)/).forEach(function (trozo) {
+        if (!trozo) { return; }
+        if (/^\s+$/.test(trozo)) { fragmento.appendChild(document.createTextNode(" ")); return; }
+        var palabra = document.createElement("span");
+        palabra.className = "word"; palabra.textContent = trozo;
+        fragmento.appendChild(palabra);
+      });
+      nodo.replaceChild(fragmento, hijo);
+    });
+  }
+
+  // El título se divide en letras agrupadas por palabra y conserva su nombre accesible
+  function dividirLetras(titulo) {
+    var texto = titulo.textContent.trim(), n = 0;
+    titulo.setAttribute("aria-label", texto);
+    titulo.textContent = "";
+    texto.split(/\s+/).forEach(function (palabra, i) {
+      var grupo = document.createElement("span");
+      grupo.className = "word-title"; grupo.setAttribute("aria-hidden", "true");
+      palabra.split("").forEach(function (caracter) {
+        var letra = document.createElement("span");
+        letra.className = "letter"; letra.textContent = caracter; letra.style.setProperty("--index", n++);
+        grupo.appendChild(letra);
+      });
+      if (i > 0) { titulo.appendChild(document.createTextNode(" ")); }
+      titulo.appendChild(grupo);
+    });
+  }
+
+  dividirLetras(composicion.querySelector("h2"));
+  dividirPalabras(composicion.querySelector(".compose-text"));
+  var piezas = Array.prototype.slice.call(composicion.querySelectorAll(".letter, .compose-text .word"));
+
+  function azar(max) { return (Math.random() - 0.5) * 2 * max; }
+  function posiciones() {
+    return piezas.map(function (pieza) { var r = pieza.getBoundingClientRect(); return { x: r.left, y: r.top }; });
+  }
+
+  // Cambia de disposición: cada pieza parte de su sitio anterior, vaga al azar y aterriza en el nuevo
+  function cambiar() {
+    var antes = posiciones();
+    indice = (indice + 1) % DISPOSICIONES.length;
+    composicion.setAttribute("data-layout", DISPOSICIONES[indice]);
+    var despues = posiciones();
+    piezas.forEach(function (pieza, i) {
+      var dx = antes[i].x - despues[i].x, dy = antes[i].y - despues[i].y;
+      pieza.animate([
+        { translate: dx + "px " + dy + "px", rotate: "0deg" },
+        { translate: (dx * 0.6 + azar(140)) + "px " + (dy * 0.6 + azar(140)) + "px", rotate: azar(40) + "deg", offset: 0.35 },
+        { translate: (dx * 0.25 + azar(140)) + "px " + (dy * 0.25 + azar(140)) + "px", rotate: azar(40) + "deg", offset: 0.7 },
+        { translate: "0px 0px", rotate: "0deg" }
+      ], { duration: MOVIMIENTO, delay: Math.random() * 400, easing: "cubic-bezier(.45,0,.2,1)", fill: "backwards" });
+    });
+  }
+
+  // El texto queda quieto REPOSO ms entre movimientos; solo corre mientras se ve y no está en pausa
+  function programar(espera) {
+    clearTimeout(temporizador);
+    if (pausado || !visible) { return; }
+    temporizador = setTimeout(function () { cambiar(); programar(MOVIMIENTO + REPOSO); }, espera);
+  }
+
+  var boton = document.createElement("button");
+  boton.type = "button"; boton.className = "link compose-pause"; boton.textContent = "Pausar animación";
+  boton.onclick = function () {
+    pausado = !pausado;
+    boton.textContent = pausado ? "Reanudar animación" : "Pausar animación";
+    programar(REPOSO);
+  };
+  composicion.querySelector(".compose-in").appendChild(boton);
+
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entradas) {
+      visible = entradas[0].isIntersecting;
+      programar(REPOSO);
+    }, { threshold: 0.3 }).observe(composicion);
+  } else {
+    visible = true; programar(REPOSO);
+  }
+})();
 // ===== Tokens: sin token y con token =====
 var TKN = ["Botón", "Enlace", "Icono", "Título", "Borde", "Etiqueta"], tkDone = 0, tkTok = false;
 function pintaTk() {
@@ -652,7 +787,7 @@ bind(["pv", "ph", "pc"], function () {
   e.innerHTML = { btn: "Guardar", tag: "Diseño ×", fil: "● Recientes", card: "Título de la tarjeta<br><span style='font-weight:400;font-size:.9rem'>El contenido va aquí.</span>" }[c];
   var r = h / v;
   $("#pcs").textContent = card ? ".tarjeta { padding: " + v + "px; }" : "." + c + " { padding: " + v + "px " + h + "px; }  /* " + fx(r, 1) + " : 1 */";
-  $("#pmsg").textContent = card ? "En contenedores se usa el mismo padding en los cuatro lados." : r < 1.5 ? "Casi igual en los cuatro lados: la geometría es correcta, pero se percibe más espacio arriba y abajo. Sube el horizontal." : r <= 2.5 ? "Cerca de 2 a 1: la proporción habitual en botones, etiquetas y filtros." : "Demasiado ancho: el componente se estira.";
+  $("#pmsg").textContent = card ? "En contenedores se usa el mismo padding en los cuatro lados." : r < 1.5 ? "Casi igual en los cuatro lados: la geometría es correcta, pero se percibe más espacio arriba y abajo. Sube el horizontal." : r <= 2.5 ? "Cerca de 2 a 1: la proporción habitual en botones, etiquetas y SVG_FILTERS." : "Demasiado ancho: el componente se estira.";
 });
 // ===== Botón de copiar en todos los bloques de código =====
 var ICO_COPY = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
@@ -856,24 +991,34 @@ route();
     var st = pasos(k, L, R); if (!st.length) { return; }
     st.forEach(function (s) { s.el.style.transition = "none"; for (var p in s.from) { s.el.style[p] = s.from[p]; } });
     void svg.getBoundingClientRect();
-    requestAnimationFrame(function () {
+    // se deja ver un momento el panel de partida antes de animar
+    setTimeout(function () {
       st.forEach(function (s) {
         s.el.style.transition = "transform .9s cubic-bezier(.2,.7,.2,1) " + s.d + "ms,opacity .7s ease " + s.d + "ms";
         s.el.style.transform = ""; s.el.style.opacity = "";
         setTimeout(function () { s.el.style.transition = ""; s.el.style.transformBox = ""; s.el.style.transformOrigin = ""; }, s.d + 1100);
       });
-    });
+    }, 900);
   }
+  var PERIODO = 5600;
   $$(".pr").forEach(function (art) {
     var h = art.querySelector("h4"), svg = art.querySelector("svg"); if (!h || !svg) { return; }
-    var k = h.firstChild.textContent.trim();
-    var b = document.createElement("button"); b.type = "button"; b.className = "link gplay"; b.textContent = "↻ Ver el cambio";
-    b.setAttribute("aria-label", "Repetir la animación de «" + k + "»");
-    b.onclick = function () { play(art, k, svg); };
+    var k = h.firstChild.textContent.trim(), pausado = false, bucle = null;
+    var b = document.createElement("button"); b.type = "button"; b.className = "link gplay";
+    function etiquetar() {
+      b.textContent = pausado ? "Reanudar animación" : "Pausar animación";
+      b.setAttribute("aria-label", (pausado ? "Reanudar" : "Pausar") + " animación de «" + k + "»");
+    }
+    etiquetar();
+    b.onclick = function () { pausado = !pausado; etiquetar(); };
     art.querySelector(".prt").appendChild(b);
+    function paso() { if (!pausado) { play(art, k, svg); } }
+    // la animación se repite mientras el ejemplo está a la vista
     if ("IntersectionObserver" in window) {
-      var o = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o.disconnect(); setTimeout(function () { play(art, k, svg); }, 500); } }, { threshold: 0.6 });
-      o.observe(svg);
+      new IntersectionObserver(function (es) {
+        clearInterval(bucle);
+        if (es[0].isIntersecting) { paso(); bucle = setInterval(paso, PERIODO); }
+      }, { threshold: 0.6 }).observe(svg);
     }
   });
 })();

@@ -1,11 +1,13 @@
 /*
  * Static content and reference data.
  * Loaded before app.js as a classic script to preserve file:// compatibility.
+ * Public data contract: descriptive UPPER_SNAKE_CASE globals consumed by app.js.
+ * Keep user-facing Spanish copy and existing option values unchanged.
  */
 
-var gustos = { code: "Me gusta programar", people: "Me gusta entender a las personas", visual: "Me gusta lo visual" };
+var USER_INTERESTS = { code: "Me gusta programar", people: "Me gusta entender a las personas", visual: "Me gusta lo visual" };
 
-var perfiles = [
+var PROFESSIONAL_PROFILES = [
   ["Diseñador gráfico (graphic designer)", "Identidad de marca, logotipos y piezas impresas o para redes.", "Illustrator, Photoshop, Affinity, Figma", ["visual"]],
   ["Investigador UX (UX researcher)", "Entrevista y observa a usuarios para saber qué necesitan.", "Entrevistas, encuestas, pruebas de usabilidad, análisis de datos", ["people"]],
   ["Diseñador UX (UX designer)", "Organiza la información y los flujos para que el producto se entienda.", "Figma, FigJam, wireframes, prototipado, pruebas con usuarios", ["people", "visual"]],
@@ -18,9 +20,9 @@ var perfiles = [
   ["Diseñador de sistemas de diseño (design systems designer)", "Mantiene los componentes y reglas que usa todo el equipo.", "Figma, tokens, documentación, Storybook, CSS", ["code", "visual"]]
 ];
 
-var filtros = { n: "none", p: "url(#f-p)", d: "url(#f-d)", r: "url(#f-r)" };
+var SVG_FILTERS = { n: "none", p: "url(#f-p)", d: "url(#f-d)", r: "url(#f-r)" };
 
-var REV = [
+var ACCESSIBILITY_EXAMPLES = [
   ['<img src="grafico-ventas.png">', false, "La imagen no tiene texto alternativo (alt)."],
   ['<label for="email">Correo</label>\n<input id="email" type="email">', true, "El campo tiene una etiqueta asociada."],
   ['<div onclick="enviar()">Enviar</div>', false, "Un div no recibe el foco ni se activa con teclado. Usa un button."],
@@ -29,9 +31,9 @@ var REV = [
   ['<img src="logo.svg" alt="Acme, ir al inicio">', true, "El alt describe la función de la imagen."]
 ];
 
-var HE = ["Visibilidad del estado del sistema", "Consistencia y estándares", "Ayudar a recuperarse de errores", "Reconocer antes que recordar", "Diseño estético y minimalista", "Prevención de errores", "Flexibilidad y eficiencia", "Ayuda y documentación"];
+var NIELSEN_HEURISTICS = ["Visibilidad del estado del sistema", "Consistencia y estándares", "Ayudar a recuperarse de errores", "Reconocer antes que recordar", "Diseño estético y minimalista", "Prevención de errores", "Flexibilidad y eficiencia", "Ayuda y documentación"];
 
-var CASOS = [
+var USABILITY_CASES = [
   ["Subes un archivo grande y la pantalla no muestra ningún progreso.", 0],
   ["El botón «Guardar» es verde en una pantalla y gris en otra.", 1],
   ["Un error dice solo «Error 0x80004005».", 2],
@@ -39,7 +41,7 @@ var CASOS = [
   ["Una página con ocho banners y textos que no aportan nada a tu tarea.", 4]
 ];
 
-var ARM = {
+var COLOR_HARMONIES = {
   mono: [[], "Un solo tono con distintas luminosidades. Sobrio y coherente, pero con poco contraste."],
   comp: [[180], "Opuestos en la rueda (180°). Máximo contraste: úsalos como color y acento."],
   ana: [[-30, 30], "Vecinos en la rueda. Calmados y armoniosos."],
@@ -48,7 +50,7 @@ var ARM = {
   tet: [[90, 180, 270], "Cuatro tonos formando un rectángulo. Rica, pero difícil de equilibrar."]
 };
 
-var PSI = [
+var COLOR_MEANINGS = [
   ["Rojo", "#C0392B", "Energía, pasión, urgencia y peligro.", "En Asia oriental es suerte y celebración. En los mercados occidentales indica pérdidas; en China, ganancias."],
   ["Naranja", "#E67E22", "Calidez, entusiasmo y cercanía.", "Muy llamativo: funciona mejor como acento que como base."],
   ["Amarillo", "#F1C40F", "Optimismo, atención y advertencia.", "Sobre blanco casi no tiene contraste; el texto encima debe ser oscuro."],
@@ -59,7 +61,7 @@ var PSI = [
   ["Blanco", "#FFFFFF", "Limpieza, simplicidad y vacío.", "En parte de Asia oriental se asocia al duelo."]
 ];
 
-var FAM = {
+var FONT_CATEGORIES = {
   serif: ["Serif", "Georgia,'Times New Roman',serif", 400, "Georgia, Times, Garamond", "Tradición, seriedad y fiabilidad. Aire editorial.", "Medios, libros, marcas clásicas y titulares con carácter.", "Muy cómoda en papel; en pantalla funciona bien a tamaños medios y grandes.", "Recomendada para leer en papel"],
   sans: ["Sans serif", "Montserrat,'Helvetica Neue',Helvetica,Arial,sans-serif", 400, "Helvetica, Montserrat, Arial", "Modernidad, claridad y neutralidad.", "Interfaces y texto en pantalla. Es la opción más segura.", "La preferida en pantallas, también a tamaños pequeños.", "Recomendada para leer en pantalla"],
   mono: ["Monoespaciada", "Consolas,'Courier New',monospace", 400, "Consolas, Courier, Fira Code", "Técnico, preciso y «de código».", "Código, datos y marcas tecnológicas.", "Cansa en párrafos largos: resérvala para código y datos."],
@@ -67,13 +69,13 @@ var FAM = {
   script: ["Manuscrita", "'Brush Script MT','Segoe Script',cursive", 400, "Brush Script, Pacifico, Lobster", "Personal, cálida y elegante.", "Detalles breves: firmas, invitaciones, logotipos.", "Difícil de leer en bloque: úsala en pocas palabras."]
 };
 
-var PRE = { art: [[[12, "Cabecera", 48]], [[8, "Contenido", 130], [4, "Lateral", 130]]], tri: [[[4, "Tarjeta 1", 110], [4, "Tarjeta 2", 110], [4, "Tarjeta 3", 110]]], hero: [[[7, "Texto y botón", 160], [5, "Imagen", 160]]] };
+var LAYOUT_PRESETS = { art: [[[12, "Cabecera", 48]], [[8, "Contenido", 130], [4, "Lateral", 130]]], tri: [[[4, "Tarjeta 1", 110], [4, "Tarjeta 2", 110], [4, "Tarjeta 3", 110]]], hero: [[[7, "Texto y botón", 160], [5, "Imagen", 160]]] };
 
-var ZCOL = { blue: "#4A66AC", terra: "#B5502F", green: "#2E7551" };
+var SHAPE_COLORS = { blue: "#4A66AC", terra: "#B5502F", green: "#2E7551" };
 
-var ZFORM = { flat: "none", diag: "polygon(0 14%, 100% 0, 100% 100%, 0 100%)", wave: "ellipse(80% 100% at 50% 100%)" };
+var SHAPE_CLIP_PATHS = { flat: "none", diag: "polygon(0 14%, 100% 0, 100% 100%, 0 100%)", wave: "ellipse(80% 100% at 50% 100%)" };
 
-var GLOS = [
+var GLOSSARY_TERMS = [
 ["ux","UX (experiencia de usuario)","UX|experiencia de usuario","Todo lo que vive una persona al usar un producto: si lo encuentra, lo entiende y le resulta agradable o frustrante."],
 ["ui","UI (interfaz de usuario)","UI|interfaz de usuario","La parte visible y manipulable de un producto: pantallas, botones, textos y colores."],
 ["wireframe","Wireframe","wireframes?","Boceto en blanco y negro de una pantalla que fija la estructura y el contenido antes de diseñar el aspecto."],
@@ -130,11 +132,11 @@ var GLOS = [
 ["tema-oscuro","Tema oscuro","modo oscuro|tema oscuro","Versión de la interfaz con fondos oscuros y texto claro."]
 ].sort(function (a, b) { return a[1].localeCompare(b[1], "es"); });
 
-var EXS = [["#000000", "#FFFFFF", "Negro 100 % sobre blanco", "Cumple, pero deslumbra"], ["#1F2A37", "#F8FAFC", "Casi negro sobre casi blanco", "Recomendado para lectura", 1], ["#8D95A8", "#FFFFFF", "Gris medio sobre blanco", "No cumple AA en texto normal"], ["#F3B824", "#4A66AC", "Azul y su complementario", "Vibra: cansa y se lee mal"]];
+var CONTRAST_EXAMPLES = [["#000000", "#FFFFFF", "Negro 100 % sobre blanco", "Cumple, pero deslumbra"], ["#1F2A37", "#F8FAFC", "Casi negro sobre casi blanco", "Recomendado para lectura", 1], ["#8D95A8", "#FFFFFF", "Gris medio sobre blanco", "No cumple AA en texto normal"], ["#F3B824", "#4A66AC", "Azul y su complementario", "Vibra: cansa y se lee mal"]];
 
-var PW = { 100: "Thin", 200: "ExtraLight", 300: "Light", 400: "Regular", 500: "Medium", 600: "SemiBold", 700: "Bold", 800: "ExtraBold", 900: "Black" };
+var FONT_WEIGHT_NAMES = { 100: "Thin", 200: "ExtraLight", 300: "Light", 400: "Regular", 500: "Medium", 600: "SemiBold", 700: "Bold", 800: "ExtraBold", 900: "Black" };
 
-var FT = {
+var GOOGLE_FONT_CATALOG = {
   fr: ["Fraunces", "Fraunces:ital,wght@0,100..900;1,100..900", 100, 900, 0, 1, "serif"],
   in: ["Inter", "Inter:ital,wght@0,100..900;1,100..900", 100, 900, 0, 1, "sans-serif"],
   pf: ["Playfair Display", "Playfair+Display:ital,wght@0,400..900;1,400..900", 400, 900, 0, 1, "serif"],
@@ -155,13 +157,13 @@ var FT = {
   sy: ["Syne", "Syne:wght@400..800", 400, 800, 0, 0, "sans-serif"]
 };
 
-var PARES = {
+var FONT_PAIRINGS = {
   ed: [["fr", "in", "Editorial cálida: la serif con carácter aporta personalidad y la sans neutra deja leer."], ["pf", "ss", "Editorial elegante: contraste alto en el titular, texto muy legible."], ["cr", "wk", "Editorial sobria: serif de lectura suave con una sans amable."]],
   mo: [["br", "in", "Moderna con personalidad: titular expresivo y texto neutro."], ["sg", "dm", "Tecnológica y amable: formas geométricas redondeadas."], ["ar", "lf", "Institucional: dos sans clásicas con ejes de ancho para titulares."]],
   te: [["jb", "in", "Técnica: ambiente de código con texto limpio."], ["rm", "wk", "Técnica y cercana: monoespaciada con una sans redondeada."], ["jb", "lf", "Técnica seria: contraste entre código y texto institucional."]],
   co: [["an", "lo", "Contraste fuerte: titular llamativo y serif tranquila para leer."], ["bs", "mw", "Deportiva y editorial: titular condensado y serif robusta."], ["sy", "cr", "Artística: titular singular y texto sereno."]]
 };
 
-var GRUPOS = [["Norma", "Normas", "Obligatorias o legales."], ["Ley", "Leyes y principios", "Describen cómo percibimos y decidimos. Salen de la psicología."], ["Evidencia", "Evidencias", "Salen de estudios y datos."], ["Convención", "Convenciones", "Práctica extendida: útil, pero no obligatoria."]];
+var RULE_GROUPS = [["standard", "Normas", "Obligatorias o legales."], ["law", "Leyes y principios", "Describen cómo percibimos y decidimos. Salen de la psicología."], ["evidence", "Evidencias", "Salen de estudios y datos."], ["convention", "Convenciones", "Práctica extendida: útil, pero no obligatoria."]];
 
-var REGLAS = { Norma: [], Ley: [], Evidencia: [], Convención: [] };
+var DESIGN_RULES = { standard: [], law: [], evidence: [], convention: [] };
