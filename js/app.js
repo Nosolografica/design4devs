@@ -50,7 +50,7 @@ function pintarPerfiles() {
       x.p[3].map(function (t) { return '<span class="sh s-' + t + '"></span>'; }).join("") +
       '</span><h4>' + m[1] + "</h4><p>" + x.p[1] + "</p><small>" + x.p[2] + "</small></article>";
   }).join("");
-  $("#cuenta").textContent = "Mostrando " + lista.length + " de " + PROFESSIONAL_PROFILES.length + " PROFESSIONAL_PROFILES" + (claves.length ? ", ordenados por afinidad." : ".");
+$("#cuenta").textContent = "Mostrando " + lista.length + " de " + PROFESSIONAL_PROFILES.length + " PROFESSIONAL_PROFILES" + (claves.length ? ", ordenados por afinidad." : ".");
 }
 Object.keys(USER_INTERESTS).forEach(function (k) {
   var b = document.createElement("button");
